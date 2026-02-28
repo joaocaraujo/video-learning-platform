@@ -1,0 +1,180 @@
+:root {
+  --bg: #0c0c0f;
+  --surface: #16161a;
+  --surface-elevated: #1c1c21;
+  --border: #27272a;
+  --border-subtle: #1f1f23;
+  --text: #fafafa;
+  --text-muted: #a1a1aa;
+  --text-muted-strong: #71717a;
+  --accent: #8b5cf6;
+  --accent-hover: #a78bfa;
+  --accent-muted: rgba(139, 92, 246, 0.15);
+  --success: #22c55e;
+  --progress: #8b5cf6;
+  --font-sans: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --radius: 10px;
+  --radius-sm: 6px;
+  --shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+  /* Media Chrome: alinhado ao tema */
+  --media-primary-color: #fafafa;
+  --media-secondary-color: rgba(24, 24, 26, 0.92);
+  --media-control-background: rgba(24, 24, 26, 0.85);
+  --media-control-hover-background: rgba(39, 39, 42, 0.95);
+  --media-range-track-background: rgba(255, 255, 255, 0.2);
+  --media-range-track-border-radius: 2px;
+  --media-preview-time-background: rgba(24, 24, 26, 0.95);
+  --media-font-family: var(--font-sans);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: -0.01em;
+}
+
+#root {
+  height: 100vh;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  background: var(--surface-elevated);
+  color: var(--text);
+  border: 1px solid var(--border);
+  transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+button:hover {
+  background: var(--border);
+}
+
+button:active {
+  transform: translateY(0.5px);
+}
+
+button.primary {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+  box-shadow: 0 1px 2px rgba(139, 92, 246, 0.25);
+}
+
+button.primary:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+  box-shadow: 0 2px 8px rgba(139, 92, 246, 0.35);
+}
+
+input[type="text"] {
+  font-family: inherit;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.9rem;
+  width: 100%;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+input[type="text"]:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-muted);
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Sidebar: barra de rolagem visível e área que recebe o scroll do rato */
+.sidebar-scroll {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  scrollbar-gutter: stable;
+  -webkit-overflow-scrolling: touch;
+}
+
+.sidebar-scroll::-webkit-scrollbar {
+  width: 12px;
+}
+
+.sidebar-scroll::-webkit-scrollbar-track {
+  background: var(--bg);
+  border-radius: 0;
+}
+
+.sidebar-scroll::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 6px;
+  border: 3px solid var(--bg);
+}
+
+.sidebar-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* Lista de aulas de cada curso: barra de rolagem bem visível */
+.course-lessons-scroll {
+  scrollbar-gutter: stable;
+  -webkit-overflow-scrolling: touch;
+}
+
+.course-lessons-scroll::-webkit-scrollbar {
+  width: 14px;
+}
+
+.course-lessons-scroll::-webkit-scrollbar-track {
+  background: var(--bg);
+  border-radius: 0;
+}
+
+.course-lessons-scroll::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 7px;
+  border: 3px solid var(--surface);
+}
+
+.course-lessons-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted-strong);
+}
+
+/* Player de vídeo: tema alinhado à app */
+media-controller {
+  --media-control-background: var(--media-control-background);
+  --media-primary-color: var(--media-primary-color);
+  --media-secondary-color: var(--media-secondary-color);
+  --media-range-track-background: var(--media-range-track-background);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+media-control-bar {
+  padding: 0.5rem 0.75rem;
+  gap: 2px;
+}
