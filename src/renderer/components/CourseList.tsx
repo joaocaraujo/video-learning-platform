@@ -49,7 +49,6 @@ export function CourseList({
       await onRenameCourse(course, editName.trim());
       cancelEdit();
     } catch {
-      // manter em edição em caso de erro
     } finally {
       setActionLoading(null);
     }

@@ -2,14 +2,10 @@ import * as fs from 'fs/promises';
 import path from 'path';
 import { app } from 'electron';
 import type { Course } from '../domain/course';
-
-/** Lista de pastas adicionadas como cursos + nomes (apenas na plataforma). */
 export interface CourseListData {
-  /** Paths das pastas que são cursos (cada pasta contém os vídeos) */
   coursePaths: string[];
-  /** Nome de exibição por path do curso */
   displayNames: Record<string, string>;
-  /** @deprecated Mantido para leitura de ficheiros antigos; não usado. */
+  /** @deprecated */
   hidden?: string[];
 }
 
@@ -40,7 +36,6 @@ async function save(data: CourseListData): Promise<void> {
   await fs.writeFile(p, JSON.stringify(data, null, 2), 'utf-8');
 }
 
-/** Lista de cursos (com nomes aplicados). */
 export async function getCourseList(): Promise<Course[]> {
   const data = await load();
   return data.coursePaths.map((p) => ({
@@ -50,7 +45,6 @@ export async function getCourseList(): Promise<Course[]> {
   }));
 }
 
-/** Adiciona pastas como cursos: se a pasta tiver subpastas (e sem vídeos na raiz), adiciona cada subpasta; senão adiciona a própria pasta. Retorna os cursos adicionados. */
 export async function addCoursesFromFolder(
   folderPath: string,
   detectedCourses: Course[]
@@ -72,14 +66,12 @@ export async function addCoursesFromFolder(
   }));
 }
 
-/** Remove curso da lista (apenas na plataforma; a pasta no disco não é alterada). */
 export async function removeCourseFromList(coursePath: string): Promise<void> {
   const data = await load();
   data.coursePaths = data.coursePaths.filter((p) => p !== coursePath);
   await save(data);
 }
 
-/** Define nome de exibição do curso (só na plataforma). */
 export async function setCourseDisplayName(
   coursePath: string,
   displayName: string

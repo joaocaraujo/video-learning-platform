@@ -4,9 +4,8 @@
 export interface Progress {
   completedLessonIds: string[];
   lastAccessedLessonId: string | null;
-  /** Posição em segundos por aula (para retomar onde parou) */
   lastWatchedPositions: Record<string, number>;
-  lastUpdatedAt: string; // ISO 8601
+  lastUpdatedAt: string;
 }
 
 export function progressPercent(progress: Progress, totalLessons: number): number {

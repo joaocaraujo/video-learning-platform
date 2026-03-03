@@ -3,11 +3,8 @@ import path from 'path';
 import { app } from 'electron';
 import type { Course } from '../domain/course';
 
-/** Configuração por pasta raiz: nomes personalizados e cursos ocultos (apenas na plataforma, disco intacto). */
 export interface RootCourseSettings {
-  /** Nome de exibição personalizado por path do curso */
   displayNames: Record<string, string>;
-  /** Paths dos cursos ocultos na plataforma (não apaga a pasta) */
   hidden: string[];
 }
 
@@ -42,7 +39,6 @@ export async function getRootSettings(rootPath: string): Promise<RootCourseSetti
   );
 }
 
-/** Aplica configuração da plataforma à lista de cursos (filtra ocultos e aplica nomes). */
 export function applySettingsToCourses(
   courses: Course[],
   settings: RootCourseSettings
@@ -56,7 +52,6 @@ export function applySettingsToCourses(
     }));
 }
 
-/** Define o nome de exibição do curso na plataforma (não renomeia a pasta). */
 export async function setCourseDisplayName(
   rootPath: string,
   coursePath: string,
@@ -68,7 +63,6 @@ export async function setCourseDisplayName(
   await saveAll(all);
 }
 
-/** Oculta o curso da lista na plataforma (não apaga a pasta no disco). */
 export async function hideCourseInPlatform(rootPath: string, coursePath: string): Promise<void> {
   const all = await loadAll();
   if (!all[rootPath]) all[rootPath] = { displayNames: {}, hidden: [] };
@@ -78,7 +72,6 @@ export async function hideCourseInPlatform(rootPath: string, coursePath: string)
   }
 }
 
-/** Restaura curso na lista (remove dos ocultos). */
 export async function unhideCourseInPlatform(rootPath: string, coursePath: string): Promise<void> {
   const all = await loadAll();
   if (!all[rootPath]) return;
@@ -86,7 +79,6 @@ export async function unhideCourseInPlatform(rootPath: string, coursePath: strin
   await saveAll(all);
 }
 
-/** Lista cursos que estão ocultos na plataforma (para mostrar opção de restaurar). */
 export async function getHiddenCourses(rootPath: string): Promise<Course[]> {
   const settings = await getRootSettings(rootPath);
   return settings.hidden.map((coursePath) => ({

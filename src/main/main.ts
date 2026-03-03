@@ -17,7 +17,6 @@ import {
 
 let mainWindow: BrowserWindow | null = null;
 
-// Registo do protocolo "media" para vídeos (deve ser antes de app.ready)
 protocol.registerSchemesAsPrivileged([
   {
     scheme: 'media',
@@ -61,7 +60,6 @@ function createWindow(): void {
   });
 }
 
-// MIME types comuns para vídeo (permite seek no elemento <video>)
 function getContentType(filePath: string): string {
   const ext = path.extname(filePath).toLowerCase();
   const map: Record<string, string> = {
@@ -74,7 +72,6 @@ function getContentType(filePath: string): string {
 }
 
 app.whenReady().then(() => {
-  // Servir ficheiros de vídeo com suporte a Range (206) para o seek funcionar
   protocol.handle('media', async (request) => {
     const url = new URL(request.url);
     const pathStr = decodeURIComponent(url.pathname.replace(/^\//, ''));
@@ -111,7 +108,6 @@ app.whenReady().then(() => {
       });
     }
 
-    // Sem Range: enviar ficheiro completo (200)
     const stream = fs.createReadStream(filePath);
     const webStream = Readable.toWeb(stream) as ReadableStream;
     return new Response(webStream, {
@@ -135,7 +131,6 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
 });
 
-// IPC: selecionar pasta (para adicionar curso(s))
 ipcMain.handle('select-folder', async () => {
   const result = await dialog.showOpenDialog(mainWindow!, {
     properties: ['openDirectory'],
@@ -145,28 +140,23 @@ ipcMain.handle('select-folder', async () => {
   return result.filePaths[0];
 });
 
-// IPC: listar cursos (lista de pastas adicionadas; nomes e ocultos na plataforma)
 ipcMain.handle('list-courses', async () => {
   return getCourseList();
 });
 
-// IPC: adicionar curso(s) a partir de uma pasta (se tiver subpastas sem vídeos na raiz = cada subpasta é curso; senão a pasta é o curso)
 ipcMain.handle('add-courses-from-folder', async (_event, folderPath: string) => {
   const detected = await listCourses.execute(folderPath);
   return addCoursesFromFolder(folderPath, detected);
 });
 
-// IPC: listar aulas de um curso
 ipcMain.handle('list-lessons', async (_event, coursePath: string) => {
   return listLessons.execute(coursePath);
 });
 
-// IPC: obter progresso
 ipcMain.handle('get-progress', async (_event, coursePath: string) => {
   return getProgress.execute(coursePath);
 });
 
-// IPC: atualizar progresso
 ipcMain.handle('update-progress', async (
   _event,
   coursePath: string,
@@ -175,19 +165,16 @@ ipcMain.handle('update-progress', async (
   return updateProgress.execute(coursePath, data);
 });
 
-// IPC: obter URL do vídeo para o player (protocolo media: para funcionar no Electron)
 ipcMain.handle('get-video-url', async (_event, filePath: string) => {
   const pathEnc = encodeURIComponent(filePath.replace(/\\/g, '/'));
   return 'media://file/' + pathEnc;
 });
 
-// IPC: renomear curso apenas na plataforma (não renomeia a pasta no disco)
 ipcMain.handle('rename-course', async (_event, coursePath: string, newName: string) => {
   await setCourseDisplayNameInStorage(coursePath, newName);
   return { id: coursePath, path: coursePath, name: newName.trim() };
 });
 
-// IPC: remover curso da lista (fica oculto; pode restaurar; não apaga a pasta no disco)
 ipcMain.handle('delete-course', async (_event, coursePath: string) => {
   await removeCourseFromList(coursePath);
 });

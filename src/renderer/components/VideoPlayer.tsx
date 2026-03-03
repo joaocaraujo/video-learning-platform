@@ -69,7 +69,6 @@ export function VideoPlayer({
     return () => video.removeEventListener('canplay', onCanPlay);
   }, [src]);
 
-  // Definir posição inicial ao carregar (retomar onde parou)
   useEffect(() => {
     const video = videoRef.current;
     if (!video || !src || initialTimeSeconds <= 0) return;
@@ -84,7 +83,6 @@ export function VideoPlayer({
     return () => video.removeEventListener('loadedmetadata', seek);
   }, [src, initialTimeSeconds]);
 
-  // Guardar posição periodicamente (não gravar durante seek programático)
   const savePosition = useCallback(() => {
     if (skipSaveRef.current) return;
     const video = videoRef.current;

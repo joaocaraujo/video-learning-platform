@@ -12,11 +12,11 @@
   --accent-muted: rgba(139, 92, 246, 0.15);
   --success: #22c55e;
   --progress: #8b5cf6;
-  --font-sans: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-sans: 'Plus Jakarta Sans', 'Segoe UI', system-ui, -apple-system, sans-serif;
   --radius: 10px;
   --radius-sm: 6px;
   --shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
-  /* Media Chrome: alinhado ao tema */
+
   --media-primary-color: #fafafa;
   --media-secondary-color: rgba(24, 24, 26, 0.92);
   --media-control-background: rgba(24, 24, 26, 0.85);
@@ -111,7 +111,6 @@ a:hover {
   text-decoration: underline;
 }
 
-/* Sidebar: barra de rolagem visível e área que recebe o scroll do rato */
 .sidebar-scroll {
   overflow-y: auto !important;
   overflow-x: hidden !important;
@@ -138,7 +137,6 @@ a:hover {
   background: var(--text-muted);
 }
 
-/* Lista de aulas de cada curso: barra de rolagem bem visível */
 .course-lessons-scroll {
   scrollbar-gutter: stable;
   -webkit-overflow-scrolling: touch;
@@ -163,7 +161,6 @@ a:hover {
   background: var(--text-muted-strong);
 }
 
-/* Player de vídeo: tema alinhado à app */
 media-controller {
   --media-control-background: var(--media-control-background);
   --media-primary-color: var(--media-primary-color);

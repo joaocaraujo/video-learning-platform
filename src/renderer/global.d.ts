@@ -1,3 +1,8 @@
+declare module '*.png' {
+  const src: string;
+  export default src;
+}
+
 export interface Course {
   id: string;
   path: string;

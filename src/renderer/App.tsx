@@ -4,6 +4,7 @@ import { CourseList } from './components/CourseList';
 import { LessonList } from './components/LessonList';
 import { VideoPlayer } from './components/VideoPlayer';
 import { Header } from './components/Header';
+import logoUrl from './assets/logo.png';
 
 const SIDEBAR_WIDTH_KEY = 'video-learning-sidebar-width';
 const SIDEBAR_MIN = 240;
@@ -14,7 +15,6 @@ function normalize(s: string): string {
   return s.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase();
 }
 
-/** Próxima aula: primeira não concluída, ou a primeira se nenhuma estiver concluída. */
 function getNextLessonToFocus(lessons: Lesson[], progress: Progress | null): Lesson | null {
   if (lessons.length === 0) return null;
   if (!progress || progress.completedLessonIds.length === 0) return lessons[0];
@@ -472,7 +472,7 @@ export default function App() {
           }}
         />
         <section style={playerSectionStyle}>
-          {currentLesson && window.api && (
+          {currentLesson && window.api ? (
             <VideoPlayer
               lesson={currentLesson}
               getVideoUrl={() => window.api.getVideoUrl(currentLesson.path)}
@@ -483,18 +483,19 @@ export default function App() {
               hasPrev={hasPrev}
               hasNext={hasNext}
             />
-          )}
-          {!currentLesson && openCourses.length > 0 && (
+          ) : (
             <div style={placeholderStyle}>
-              {searchQuery.trim() &&
-              openCourses.some((oc) => oc.lessons.length > 0 && filterLessons(oc.lessons).length === 0)
-                ? 'Nenhuma aula corresponde à pesquisa.'
-                : 'Selecione uma aula na lista ao lado.'}
-            </div>
-          )}
-          {!currentLesson && courses.length === 0 && (
-            <div style={placeholderStyle}>
-              Selecione um curso na lista.
+              <div style={placeholderContentStyle}>
+                <img src={logoUrl} alt="" style={placeholderLogoStyle} />
+                <span style={placeholderTextStyle}>
+                  {courses.length === 0
+                    ? 'Adicione curso(s) e selecione uma aula na lista ao lado.'
+                    : searchQuery.trim() &&
+                      openCourses.some((oc) => oc.lessons.length > 0 && filterLessons(oc.lessons).length === 0)
+                    ? 'Nenhuma aula corresponde à pesquisa.'
+                    : 'Selecione uma aula na lista ao lado para começar.'}
+                </span>
+              </div>
             </div>
           )}
         </section>
@@ -530,6 +531,29 @@ const placeholderStyle: React.CSSProperties = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
+  minHeight: 0,
+  width: '100%',
   color: 'var(--text-muted)',
   fontSize: '1rem',
+};
+
+const placeholderContentStyle: React.CSSProperties = {
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: '1.5rem',
+  padding: '2rem',
+};
+
+const placeholderLogoStyle: React.CSSProperties = {
+  width: 180,
+  height: 180,
+  objectFit: 'contain',
+  opacity: 0.9,
+};
+
+const placeholderTextStyle: React.CSSProperties = {
+  textAlign: 'center',
+  maxWidth: 320,
 };

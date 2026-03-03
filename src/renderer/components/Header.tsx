@@ -1,4 +1,5 @@
 import React from 'react';
+import logoUrl from '../assets/logo.png';
 
 interface HeaderProps {
   onAddCourses: () => void;
@@ -19,9 +20,12 @@ export function Header({ onAddCourses, onRefresh, courseCount }: HeaderProps) {
         flexWrap: 'wrap',
       }}
     >
-      <h1 style={{ margin: 0, fontSize: '1.35rem', fontWeight: 700, letterSpacing: '-0.02em' }}>
-        StudyHub
-      </h1>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+        <img src={logoUrl} alt="" style={{ width: 36, height: 36, objectFit: 'contain' }} />
+        <h1 style={{ margin: 0, fontSize: '1.35rem', fontWeight: 700, letterSpacing: '-0.02em' }}>
+          StudyHub
+        </h1>
+      </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1, minWidth: 200 }}>
         <button type="button" className="primary" onClick={onAddCourses}>
           Adicionar curso(s)
